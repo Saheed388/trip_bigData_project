@@ -9,8 +9,8 @@ import json
 # Load env vars
 load_dotenv()
 
-DBT_ACCOUNT_ID = os.getenv("DBT_ACCOUNT_ID", "704719")   # default to your value
-DBT_JOB_ID = os.getenv("DBT_JOB_ID", "7047106")          # default to your value
+DBT_ACCOUNT_ID = os.getenv("DBT_ACCOUNT_ID")   # default to your value
+DBT_JOB_ID = os.getenv("DBT_JOB_ID")          # default to your value
 DBT_API_KEY = os.getenv("DBT_API_KEY")                   # must be set in .env
 
 def trigger_dbt_job():
