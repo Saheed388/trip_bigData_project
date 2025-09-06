@@ -4,7 +4,7 @@
 
 
 ````markdown
-# NYC Yellow Taxi Data Pipeline 🚖
+# NYC Yellow Taxi Data Pipeline 
 
 ## Overview
 This project builds a **robust big data pipeline** to process and analyze NYC Yellow Taxi Trip data.  
@@ -30,7 +30,7 @@ All tasks are orchestrated through **scheduled Airflow workflows**.
 
 ---
 
-## ✨ Features
+##  Features
 - **Data Ingestion**: Download raw data from GitHub releases  
 - **Data Processing**: Use PySpark to transform and save as Parquet  
 - **Data Storage**: Load processed data into Snowflake  
@@ -39,7 +39,7 @@ All tasks are orchestrated through **scheduled Airflow workflows**.
 
 ---
 
-## 🛠 Technologies
+##  Technologies
 - **VSCode** – Code editor for development  
 - **Docker** – Containerized environments (Spark & Airflow)  
 - **Python 3.8+** – Core scripting language  
@@ -53,7 +53,7 @@ All tasks are orchestrated through **scheduled Airflow workflows**.
 
 ---
 
-## 📋 Prerequisites
+##  Prerequisites
 Before running, ensure you have:  
 - **VSCode** (for editing scripts/configs)  
 - **Docker** (for Spark & Airflow containers)  
@@ -67,7 +67,7 @@ Before running, ensure you have:
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/<your-repo>/nyc-yellow-taxi-pipeline.git
@@ -100,7 +100,7 @@ Before running, ensure you have:
 
 ---
 
-## 🔄 Pipeline Architecture
+##  Pipeline Architecture
 
 ```mermaid
 flowchart LR
@@ -113,7 +113,7 @@ flowchart LR
 
 ---
 
-## 📊 Airflow DAG Workflow
+##  Airflow DAG Workflow
 
 ```mermaid
 flowchart TD
@@ -126,7 +126,7 @@ flowchart TD
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 data/               # Raw downloaded datasets
@@ -142,7 +142,7 @@ README.md           # Project documentation
 
 ---
 
-## ▶️ Running the Pipeline
+##  Running the Pipeline
 
 1. Start Docker or deploy on Astronomer Cloud
 2. Open Airflow UI
@@ -152,7 +152,7 @@ README.md           # Project documentation
 
 ---
 
-## 🔐 Security Best Practices
+##  Security Best Practices
 
 * Store secrets (Snowflake creds, dbt API key) in **Airflow Connections** or **env vars**
 * **Never commit sensitive data** to GitHub
@@ -160,7 +160,7 @@ README.md           # Project documentation
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 1. Fork repo
 2. Create feature branch
@@ -173,7 +173,7 @@ Follow project coding & documentation standards.
 
 
 
-## 📬 Contact
+##  Contact
 **tunwaju@gmail.com**
 
 ```
