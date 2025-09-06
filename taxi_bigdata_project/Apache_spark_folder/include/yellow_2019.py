@@ -7,11 +7,11 @@ import os
 from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
 import logging
 
-# Configure logging
+#_____________ Configure logging_____________________
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Load environment variables from .env file
+# __________________Load environment variables from .env file_____________
 load_dotenv()
 
 # ------------------------------
@@ -55,7 +55,7 @@ def process_to_parquet(year=2019):
 
     print(" Reading CSV files...")
 
-    # Define schema explicitly for performance (no inferSchema scan)
+    # ____________Define schema explicitly for performance no inferSchema scan_________
     schema = StructType([
         StructField("VendorID", IntegerType(), True),
         StructField("tpep_pickup_datetime", TimestampType(), True),
@@ -79,11 +79,11 @@ def process_to_parquet(year=2019):
 
     df = spark.read.schema(schema).csv(input_path, header=True)
 
-    # Repartition for parallelism and avoid small files problem
+    #__________ Repartition for parallelism and avoid small files problem_____________
     df = df.repartition(400, "tpep_pickup_datetime")  # balance by time column
 
     parquet_path = f"yellow_tripdata_{year}_all.parquet"
-    print(f"✍️ Writing Parquet to {parquet_path} ...")
+    print(f" Writing Parquet to {parquet_path} ...")
 
     df.write.mode("overwrite") \
       .option("compression", "snappy") \
@@ -110,10 +110,10 @@ def transform_taxi_data(input_path, year=2019):
     print("Debug: Input DataFrame schema")
     df.printSchema()
 
-    # Drop rows with invalid VendorID or nulls
+    # ___________Drop rows with invalid VendorID or nulls____________
     cleaned_df = df.filter(col("VendorID").isNotNull())
 
-    # Add date/time breakdowns (good for partitioning downstream)
+    # _____________Add date/time breakdowns (good for partitioning downstream)_____________
     transformed_df = cleaned_df.withColumn("pickup_date", to_date(col("tpep_pickup_datetime"))) \
                                .withColumn("pickup_time", date_format(col("tpep_pickup_datetime"), "HH:mm:ss")) \
                                .withColumn("dropoff_date", to_date(col("tpep_dropoff_datetime"))) \
@@ -125,7 +125,7 @@ def transform_taxi_data(input_path, year=2019):
     output_path = f"yellow_tripdata_{year}_transformed.parquet"
     print(f" Writing transformed data to: {output_path}")
 
-    # Partitioned Parquet (much better for querying big data)
+    # ____________Partitioned Parquet  for querying big data_____________
     transformed_df.write.partitionBy("pickup_date").mode("overwrite").parquet(output_path)
 
     spark.stop()
@@ -157,7 +157,7 @@ def load_to_snowflake(parquet_path, snowflake_conn_id='snowflakes_con'):
     print(f" Reading parquet: {parquet_path}")
     df = spark.read.parquet(parquet_path)
 
-    # Initialize SnowflakeHook
+    # ________________Initialize SnowflakeHook________________
     hook = SnowflakeHook(snowflake_conn_id=snowflake_conn_id)
     
     # Get connection details for logging
@@ -176,7 +176,7 @@ def load_to_snowflake(parquet_path, snowflake_conn_id='snowflakes_con'):
         conn = hook.get_conn()
         cursor = conn.cursor()
 
-        # Create table if it doesn't exist
+        # ____________Create table if it doesn't exist______________
         logger.info(f"Ensuring table {table_name} exists")
         create_table_query = f"""
         CREATE TABLE IF NOT EXISTS {table_name} (
@@ -207,11 +207,11 @@ def load_to_snowflake(parquet_path, snowflake_conn_id='snowflakes_con'):
         cursor.execute(create_table_query)
         logger.info(f"Table {table_name} created or verified")
 
-        # Create temporary stage
+        # _____________Create temporary stage_____________
         logger.info(f"Creating temporary stage: {stage_name}")
         cursor.execute(f"CREATE OR REPLACE TEMPORARY STAGE {stage_name}")
 
-        # Collect all Parquet files
+        #_____________ Collect all Parquet files________________
         parquet_files = []
         for root, _, files in os.walk(parquet_path):
             for file in files:
@@ -221,12 +221,12 @@ def load_to_snowflake(parquet_path, snowflake_conn_id='snowflakes_con'):
         if not parquet_files:
             raise ValueError(f"No Parquet files found in {parquet_path}")
 
-        # Upload each Parquet file to the stage
+        #________________ Upload each Parquet file to the stage______________
         for file_path in parquet_files:
             logger.info(f"Uploading {file_path} to Snowflake stage {stage_name}")
             cursor.execute(f"PUT file://{file_path} @{stage_name} AUTO_COMPRESS=TRUE")
 
-        # Load data into Snowflake using COPY INTO
+        #_____________ Load data into Snowflake using COPY INTO_________________
         logger.info(f"Loading data into {table_name}")
         copy_query = f"""
         COPY INTO {table_name}
@@ -236,12 +236,12 @@ def load_to_snowflake(parquet_path, snowflake_conn_id='snowflakes_con'):
         """
         cursor.execute(copy_query)
 
-        # Verify the load by counting rows
+        # _____________Verify the load by counting rows________________
         cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
         row_count = cursor.fetchone()[0]
         logger.info(f"Loaded {row_count} rows into {table_name}")
 
-        # Clean up
+        # ______________Clean up_______________
         cursor.execute(f"DROP STAGE {stage_name}")
         cursor.close()
         conn.close()

@@ -33,7 +33,7 @@ def download_files(year=2020):
                 else:
                     print(f" Skipped {file_name} (not found)")
         except Exception as e:
-            print(f"❌ Error downloading {file_name}: {e}")
+            print(f" Error downloading {file_name}: {e}")
 
 # ------------------------------
 # 2. Process CSV -> Parquet
@@ -79,7 +79,7 @@ def process_to_parquet(year=2020):
     df = df.repartition(400, "tpep_pickup_datetime")  # balance by time column
 
     parquet_path = f"yellow_tripdata_{year}_all.parquet"
-    print(f"✍️ Writing Parquet to {parquet_path} ...")
+    print(f"Writing Parquet to {parquet_path} ...")
 
     df.write.mode("overwrite") \
       .option("compression", "snappy") \
@@ -119,7 +119,7 @@ def transform_taxi_data(input_path, year=2020):
     transformed_df.printSchema()
 
     output_path = f"yellow_tripdata_{year}_transformed.parquet"
-    print(f"✍️ Writing transformed data to: {output_path}")
+    print(f"Writing transformed data to: {output_path}")
 
     # Partitioned Parquet (much better for querying big data)
     transformed_df.write.partitionBy("pickup_date").mode("overwrite").parquet(output_path)
