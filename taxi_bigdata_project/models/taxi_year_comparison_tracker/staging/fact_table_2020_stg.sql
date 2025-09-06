@@ -1,0 +1,21 @@
+{{ config(materialized='table') }}
+
+select
+    VENDORID,
+    PASSENGER_COUNT NUMBER,
+    CONGESTION_SURCHARGE,
+    DOLOCATIONID,
+    EXTRA,
+    FARE_AMOUNT,
+    IMPROVEMENT_SURCHARGE,
+    MTA_TAX,
+    PASSENGER_COUNT,
+    PAYMENT_TYPE,
+    PULOCATIONID,
+    RATECODEID,
+    TIP_AMOUNT,
+    TOLLS_AMOUNT,
+    TOTAL_AMOUNT,
+    TRIP_DISTANCE
+
+from {{ source('taxi_project', 'YELLOW_TRIP_2020_DATA') }}

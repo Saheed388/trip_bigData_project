@@ -1,0 +1,15 @@
+
+sources:
+  - name: taxi_project                # logical name for the source (you'll reference as {{ source('raw', 'customers') }})
+    schema: YELLO_ALL_DATA              # schema in your Snowflake database
+    database: YELLOW_DATA    # optional: specify database (good practice in Snowflake)
+    tables:
+      - name: YELLOW_TRIP_2021_DATA
+        identifier: YELLOW_TRIP_2021_DATA
+        
+      - name: YELLOW_TRIP_2020_DATA
+        identifier: YELLOW_TRIP_2020_DATA
+        
+      - name: YELLOW_TRIP_2019_DATA
+        identifier: YELLOW_TRIP_2019_DATA
+        
