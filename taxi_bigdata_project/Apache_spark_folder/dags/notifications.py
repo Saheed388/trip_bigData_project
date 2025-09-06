@@ -30,32 +30,32 @@ def send_email(subject, body):
             server.login(email_conf['smtp_user'], email_conf['smtp_pass'])
             server.send_message(msg)
 
-        logger.info("✅ Notification sent.")
+        logger.info(" Notification sent.")
     except Exception as e:
-        logger.error(f"❌ Email failed: {e}")
+        logger.error(f" Email failed: {e}")
 
 def notify_task_success(context):
     task = context['task_instance'].task_id
     send_email(
-        subject=f"[✅ SUCCESS] Task '{task}'",
+        subject=f"[ SUCCESS] Task '{task}'",
         body=f"The task '{task}' in DAG '{context['dag'].dag_id}' succeeded."
     )
 
 def notify_task_failure(context):
     task = context['task_instance'].task_id
     send_email(
-        subject=f"[❌ FAILED] Task '{task}'",
+        subject=f"[ FAILED] Task '{task}'",
         body=f"The task '{task}' in DAG '{context['dag'].dag_id}' failed.\n\nError:\n{context['exception']}"
     )
 
 def notify_dag_start():
     send_email(
-        subject=f"[🚀 STARTED] DAG has started",
+        subject=f"[ STARTED] DAG has started",
         body=f"The DAG has started running."
     )
 
 def notify_dag_complete(context):
     send_email(
-        subject=f"[✅ COMPLETED] DAG '{context['dag'].dag_id}'",
+        subject=f"[ COMPLETED] DAG '{context['dag'].dag_id}'",
         body=f"DAG '{context['dag'].dag_id}' has completed successfully."
     )
