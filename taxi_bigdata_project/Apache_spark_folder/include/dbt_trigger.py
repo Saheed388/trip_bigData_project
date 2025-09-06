@@ -7,9 +7,9 @@ import time
 # Load env vars
 load_dotenv()
 
-DBT_ACCOUNT_ID = os.getenv("DBT_ACCOUNT_ID", "70471823491199")   # default to your value
-DBT_JOB_ID = os.getenv("DBT_JOB_ID", "70471823504606")          # default to your value
-DBT_API_KEY = os.getenv("DBT_API_KEY", "dbtc_A0YRIPUPkhFiX1GuDkeQyD2fbXNqttkjeSTH5uWwVnGSoYNRic")                   # must be set in .env
+DBT_ACCOUNT_ID = os.getenv("DBT_ACCOUNT_ID")   # default to your value
+DBT_JOB_ID = os.getenv("DBT_JOB_ID")          # default to your value
+DBT_API_KEY = os.getenv("DBT_API_KEY")                   # must be set in .env
 
 def trigger_dbt_job():
     if not DBT_API_KEY:
