@@ -55,7 +55,7 @@ def trigger_dbt_job():
         print(f"Run {run_id} status: {status_map.get(status, status)}")
 
         if status == 10:
-            print(f"dbt job {DBT_JOB_ID} (Run ID: {run_id}) completed successfully ✅")
+            print(f"dbt job {DBT_JOB_ID} (Run ID: {run_id}) completed successfully")
             return run_id
         elif status in [20, 30]:
             raise Exception(f"dbt job failed with status: {status_map.get(status, status)}")
